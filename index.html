@@ -11,62 +11,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f8f9fa;
+            color: #2c3e50;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             text-align: center;
         }
 
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
         h1 {
-            color: #333;
-            margin-bottom: 30px;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
         }
 
-        .upload-container {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .upload-button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        .upload-button:hover {
-            background-color: #45a049;
-        }
-
-        #file-input {
-            display: none;
-        }
-
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        #preview {
-            max-width: 300px;
-            margin-top: 20px;
+        h2 {
+            font-size: 1.6rem;
+            margin-top: 2rem;
         }
 
         .drop-zone {
@@ -75,92 +44,232 @@
             height: 200px;
             padding: 25px;
             margin: 20px auto;
-            background: #fff;
-            border: 2px dashed #4CAF50;
-            border-radius: 8px;
+            background: white;
+            border: 2px dashed #3498db;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover {
+            border-color: #2980b9;
+            background: #f8f9fa;
         }
 
         .drop-zone.dragover {
-            background: #e8f5e9;
-            border-color: #2e7d32;
+            background: #e3f2fd;
+            border-color: #2196F3;
         }
 
         .url-input {
             width: 100%;
             max-width: 580px;
-            padding: 10px;
+            padding: 12px 15px;
             margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
         }
 
-        .submit-btn {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
+        .url-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .submit-btn, .upload-button, .clear-history {
+            padding: 12px 24px;
+            font-size: 1rem;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            margin: 10px 0;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
-        .result-table {
+        .submit-btn, .upload-button {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .submit-btn:hover, .upload-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .clear-history {
+            background-color: #e74c3c;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .clear-history:hover {
+            background-color: #c0392b;
+        }
+
+        .result-table, #historyTable {
             width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
+            margin-top: 1.5rem;
+            border-collapse: separate;
+            border-spacing: 0;
             background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
 
         .result-table th, .result-table td {
-            padding: 12px;
-            border: 1px solid #ddd;
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
             text-align: left;
         }
 
         .result-table th {
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .result-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .copy-btn, .delete-btn {
+            padding: 8px 16px;
+            margin: 0 4px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .copy-btn:hover, .delete-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background-color: #2ecc71;
+        }
+
+        .status-error {
+            background-color: #e74c3c;
         }
 
         .preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 1.5rem 0;
         }
 
         .preview-item {
-            width: 150px;
             position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .preview-item:hover {
+            transform: translateY(-2px);
         }
 
         .preview-item img {
             width: 100%;
             height: auto;
-            border-radius: 4px;
+            display: block;
         }
 
-        .status-badge {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 12px;
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .drop-zone {
+                height: 150px;
+            }
+
+            .submit-btn, .upload-button, .clear-history {
+                padding: 10px 20px;
+            }
+        }
+
+        .history-section {
+            margin-top: 3rem;
+            width: 100%;
+        }
+
+        .result-table {
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            text-align: left;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .clean-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background-color: #95a5a6;
             color: white;
+            margin-left: 10px;
         }
 
-        .status-success {
-            background-color: #4CAF50;
+        .clean-btn:hover {
+            background-color: #7f8c8d;
+            transform: translateY(-1px);
         }
 
-        .status-error {
-            background-color: #f44336;
+        @keyframes sweep {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(20px); }
+        }
+
+        .sweeping {
+            animation: sweep 0.3s ease-out forwards;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
@@ -181,12 +290,14 @@
         <div>
             <input type="text" class="url-input" id="urlInput" placeholder="输入图片URL地址">
             <button class="submit-btn" id="urlSubmitBtn">识别URL图片</button>
+            <button class="clean-btn" id="cleanBtn">清空数据</button>
         </div>
 
         <!-- 预览区域 -->
         <div class="preview-container" id="previewContainer"></div>
 
-        <!-- 结果表格 -->
+        <!-- 当前识别结果表格 -->
+        <h2>当前识别结果</h2>
         <table class="result-table">
             <thead>
                 <tr>
@@ -198,9 +309,79 @@
             </thead>
             <tbody id="resultTableBody"></tbody>
         </table>
+
+        <!-- 历史记录区域 -->
+        <div class="history-section">
+            <h2>识别历史</h2>
+            <button class="clear-history" id="clearHistoryBtn">清除历史记录</button>
+            <table class="result-table" id="historyTable">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>识别结果</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
+        // 已有的全局函数
+        function confirmAndOpenUrl(url) {
+            const confirmMessage = `是否打开以下链接？\n${url}`;
+            if (confirm(confirmMessage)) {
+                window.open(url, '_blank');
+            }
+        }
+
+        // 将 copyToClipboard 移到全局作用域
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                // 创建一个临时提示元素
+                const tooltip = document.createElement('div');
+                tooltip.textContent = '已复制到剪贴板';
+                tooltip.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    z-index: 1000;
+                    animation: fadeInOut 1.5s ease-in-out;
+                `;
+
+                // 添加动画样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; }
+                        20% { opacity: 1; }
+                        80% { opacity: 1; }
+                        100% { opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+
+                // 添加提示到页面
+                document.body.appendChild(tooltip);
+
+                // 1.5秒后移除提示
+                setTimeout(() => {
+                    tooltip.remove();
+                    style.remove();
+                }, 1500);
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const dropZone = document.getElementById('dropZone');
             const fileInput = document.getElementById('file-input');
@@ -235,12 +416,26 @@
                 handleFiles(files);
             });
 
-            urlSubmitBtn.addEventListener('click', () => {
+            // 添加防抖函数，优化URL输入处理
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // 修改URL输入处理
+            urlSubmitBtn.addEventListener('click', debounce(() => {
                 const url = urlInput.value.trim();
                 if (url) {
                     handleImageUrl(url);
                 }
-            });
+            }, 300));
 
             async function handleFiles(files) {
                 previewContainer.innerHTML = '';
@@ -253,10 +448,23 @@
                         continue;
                     }
 
+                    // 创建预览项
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${URL.createObjectURL(file)}">
+                        <span class="status-badge">处理中...</span>
+                    `;
+                    previewContainer.appendChild(previewItem);
+
                     try {
                         const result = await processFile(file, i);
+                        previewItem.querySelector('.status-badge').className = 'status-badge status-success';
+                        previewItem.querySelector('.status-badge').textContent = '成功';
                         addResult(i + 1, '成功', result);
                     } catch (error) {
+                        previewItem.querySelector('.status-badge').className = 'status-badge status-error';
+                        previewItem.querySelector('.status-badge').textContent = '失败';
                         addResult(i + 1, '失败', error.message);
                     }
                 }
@@ -318,24 +526,12 @@
                                 () => {
                                     ctx.filter = 'contrast(1.2) brightness(1.1) saturate(1.2)';
                                     ctx.drawImage(img, 0, 0, size.width, size.height);
-                                },
-                                // 黑白高对比
-                                () => {
-                                    ctx.filter = 'grayscale(1) contrast(2)';
-                                    ctx.drawImage(img, 0, 0, size.width, size.height);
-                                },
-                                // 反相
-                                () => {
-                                    ctx.filter = 'invert(1)';
-                                    ctx.drawImage(img, 0, 0, size.width, size.height);
                                 }
                             ];
 
                             for (const process of processes) {
                                 process();
-                                const imageData = ctx.getImageData(0, 0, size.width, size.height);
-                                versions.push(imageData);
-                                versions.push(canvas.toDataURL('image/png', 1.0));
+                                versions.push(ctx.getImageData(0, 0, size.width, size.height));
                             }
                         }
 
@@ -347,45 +543,20 @@
             }
 
             async function processFile(file, index) {
-                const previewItem = document.createElement('div');
-                previewItem.className = 'preview-item';
-                previewItem.innerHTML = `
-                    <img src="${URL.createObjectURL(file)}">
-                    <span class="status-badge">处理中...</span>
-                `;
-                previewContainer.appendChild(previewItem);
-
                 try {
                     const processedVersions = await preprocessImage(file);
                     
-                    // 尝试所有可能的识别方法
                     for (const version of processedVersions) {
                         try {
-                            // 如果是 ImageData
                             if (version instanceof ImageData) {
-                                // 尝试 jsQR
                                 const jsQRResult = await decodeWithJsQR(version);
                                 if (jsQRResult) {
-                                    return handleSuccess(jsQRResult, previewItem);
+                                    return handleSuccess(jsQRResult);
                                 }
 
-                                // 尝试 ZXing
                                 const zxingResult = await decodeWithZXing(version);
                                 if (zxingResult) {
-                                    return handleSuccess(zxingResult, previewItem);
-                                }
-                            } 
-                            // 如果是 DataURL
-                            else if (typeof version === 'string') {
-                                // 尝试 QrScanner
-                                const response = await fetch(version);
-                                const blob = await response.blob();
-                                const result = await QrScanner.scanImage(blob, {
-                                    returnDetailedScanResult: true,
-                                    qrEngine: 'worker'
-                                });
-                                if (result && result.data) {
-                                    return handleSuccess(result.data, previewItem);
+                                    return handleSuccess(zxingResult);
                                 }
                             }
                         } catch (e) {
@@ -395,28 +566,41 @@
 
                     throw new Error('无法识别二维码');
                 } catch (error) {
-                    previewItem.querySelector('.status-badge').className = 'status-badge status-error';
-                    previewItem.querySelector('.status-badge').textContent = '失败';
-                    throw new Error('无法识别二维码，请确保图片清晰且包含有效的二维码');
+                    throw error;
                 }
             }
 
             function handleSuccess(result, previewItem) {
-                previewItem.querySelector('.status-badge').className = 'status-badge status-success';
-                previewItem.querySelector('.status-badge').textContent = '成功';
+                if (!result) {
+                    throw new Error('识别结果为空');
+                }
+                
+                if (previewItem && previewItem.querySelector('.status-badge')) {
+                    previewItem.querySelector('.status-badge').className = 'status-badge status-success';
+                    previewItem.querySelector('.status-badge').textContent = '成功';
+                }
+                
+                // 添加到历史记录
+                addToHistory(result);
+                
                 return result;
             }
 
             function addResult(index, status, result) {
                 const row = document.createElement('tr');
+                const safeResult = escapeHtml(result);
                 row.innerHTML = `
                     <td>${index}</td>
                     <td>${status}</td>
-                    <td>${result}</td>
+                    <td>${safeResult}</td>
                     <td>
                         ${isValidUrl(result) ? 
-                            `<button onclick="window.open('${result}', '_blank')">打开链接</button>` : 
+                            `<button onclick="confirmAndOpenUrl('${safeResult}')" class="copy-btn">打开链接</button>` : 
                             ''}
+                        ${isImageUrl(result) ? 
+                            `<button onclick="handleImageUrl('${safeResult}')" class="copy-btn">识别图片</button>` : 
+                            ''}
+                        <button onclick="copyToClipboard('${safeResult}')" class="copy-btn">复制</button>
                     </td>
                 `;
                 resultTableBody.appendChild(row);
@@ -431,17 +615,314 @@
                 }
             }
 
-            async function handleImageUrl(url) {
+            function isImageUrl(url) {
                 try {
-                    const response = await fetch(url);
-                    const blob = await response.blob();
-                    const file = new File([blob], 'image.jpg', { type: blob.type });
-                    handleFiles([file]);
-                } catch (error) {
-                    addResult(1, '失败', '无法加载URL图片');
+                    const urlObj = new URL(url);
+                    const pathname = urlObj.pathname.toLowerCase();
+                    return pathname.endsWith('.jpg') || 
+                           pathname.endsWith('.jpeg') || 
+                           pathname.endsWith('.png') || 
+                           pathname.endsWith('.gif') || 
+                           pathname.endsWith('.webp');
+                } catch {
+                    return false;
                 }
             }
+
+            // 修改 handleImageUrl 函数
+            async function handleImageUrl(url) {
+                try {
+                    // 验证URL格式
+                    if (!url.trim()) {
+                        throw new Error('请输入图片URL');
+                    }
+
+                    try {
+                        new URL(url);
+                    } catch {
+                        throw new Error('无效的URL格式');
+                    }
+
+                    // 清空之前的结果
+                    resultTableBody.innerHTML = '';
+                    previewContainer.innerHTML = '';
+                    
+                    // 添加加载提示
+                    addResult(1, '处理中', '正在加载图片...');
+                    
+                    // 获取图片
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`图片加载失败 (HTTP ${response.status})`);
+                    }
+                    if (!response.headers.get('content-type')?.includes('image')) {
+                        throw new Error('URL不是有效的图片地址');
+                    }
+
+                    // 获取图片数据
+                    const blob = await response.blob();
+                    const file = new File([blob], 'image.jpg', { type: blob.type });
+                    const imageUrl = URL.createObjectURL(file);
+
+                    // 创建预览
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${imageUrl}">
+                        <span class="status-badge">处理中...</span>
+                    `;
+                    previewContainer.appendChild(previewItem);
+
+                    try {
+                        // 下载图片
+                        await downloadImage(blob, getFileNameFromUrl(url));
+                        showSuccessTooltip('图片下载成功');
+
+                        // 更新状态
+                        previewItem.querySelector('.status-badge').className = 'status-badge status-success';
+                        previewItem.querySelector('.status-badge').textContent = '成功';
+
+                        // 清除加载提示
+                        resultTableBody.innerHTML = '';
+                        addResult(1, '成功', '图片下载完成');
+
+                    } catch (error) {
+                        previewItem.querySelector('.status-badge').className = 'status-badge status-error';
+                        previewItem.querySelector('.status-badge').textContent = '失败';
+                        throw error;
+                    } finally {
+                        // 清理创建的 URL
+                        URL.revokeObjectURL(imageUrl);
+                    }
+
+                } catch (error) {
+                    // 清空之前的处理中状态
+                    resultTableBody.innerHTML = '';
+                    
+                    // 显示错误信息
+                    addResult(1, '失败', error.message || '图片加载失败');
+                    
+                    // 在控制台输出详细错误信息
+                    console.error('URL图片处理错误:', error);
+                    
+                    showErrorTooltip(error.message || '图片加载失败');
+                }
+            }
+
+            // 添加成功提示函数
+            function showSuccessTooltip(message) {
+                const tooltip = document.createElement('div');
+                tooltip.textContent = message;
+                tooltip.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: rgba(46, 204, 113, 0.9);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 4px;
+                    z-index: 1000;
+                    animation: fadeInOut 2s ease-in-out;
+                `;
+                document.body.appendChild(tooltip);
+                setTimeout(() => tooltip.remove(), 2000);
+            }
+
+            // 添加错误提示函数
+            function showErrorTooltip(message) {
+                const tooltip = document.createElement('div');
+                tooltip.textContent = message;
+                tooltip.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: rgba(231, 76, 60, 0.9);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 4px;
+                    z-index: 1000;
+                    animation: fadeInOut 2s ease-in-out;
+                `;
+                document.body.appendChild(tooltip);
+                setTimeout(() => tooltip.remove(), 2000);
+            }
+
+            // 修改下载图片函数，返回 Promise
+            function downloadImage(blob, fileName) {
+                return new Promise((resolve, reject) => {
+                    try {
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = fileName;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(link.href);
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            }
+
+            // 从URL中获取文件名
+            function getFileNameFromUrl(url) {
+                try {
+                    const urlObj = new URL(url);
+                    const pathname = urlObj.pathname;
+                    let fileName = pathname.split('/').pop() || 'image.jpg';
+                    
+                    // 确保文件名有扩展名
+                    if (!fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                        fileName += '.jpg';
+                    }
+                    
+                    // 处理文件名中的特殊字符
+                    fileName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+                    
+                    return fileName;
+                } catch {
+                    return 'image.jpg';
+                }
+            }
+
+            function addToHistory(result) {
+                // 从localStorage获取现有历史记录
+                let history = JSON.parse(localStorage.getItem('qrHistory') || '[]');
+                
+                // 添加新记录
+                const newRecord = {
+                    timestamp: new Date().toLocaleString(),
+                    result: result,
+                    // 添加图片预览（如果需要的话）
+                    preview: previewContainer.innerHTML
+                };
+                
+                // 检查是否已存在相同的记录
+                const isDuplicate = history.some(record => record.result === result);
+                if (!isDuplicate) {
+                    // 将新记录添加开头
+                    history.unshift(newRecord);
+                    
+                    // 只保留最近的20条记录
+                    if (history.length > 20) {
+                        history = history.slice(0, 20);
+                    }
+                    
+                    // 保存回localStorage
+                    localStorage.setItem('qrHistory', JSON.stringify(history));
+                    
+                    // 更新显示
+                    updateHistoryDisplay();
+                }
+            }
+
+            function updateHistoryDisplay() {
+                const historyTableBody = document.getElementById('historyTableBody');
+                const history = JSON.parse(localStorage.getItem('qrHistory') || '[]');
+                
+                historyTableBody.innerHTML = history.map((record, index) => `
+                    <tr>
+                        <td>${record.timestamp}</td>
+                        <td>${record.result}</td>
+                        <td>
+                            ${isValidUrl(record.result) ? 
+                                `<button onclick="confirmAndOpenUrl('${record.result}')" class="copy-btn">打开链接</button>` : 
+                                ''}
+                            ${isImageUrl(record.result) ? 
+                                `<button onclick="handleImageUrl('${record.result}')" class="copy-btn">识别图片</button>` : 
+                                ''}
+                            <button onclick="copyToClipboard('${record.result}')" class="copy-btn">复制</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            function deleteHistoryItem(index) {
+                if (confirm('确定要删除这条记录吗？')) {
+                    let history = JSON.parse(localStorage.getItem('qrHistory') || '[]');
+                    history.splice(index, 1);
+                    localStorage.setItem('qrHistory', JSON.stringify(history));
+                    updateHistoryDisplay();
+                }
+            }
+
+            // 初始化显示历史记录
+            updateHistoryDisplay();
+
+            // 添加清除历史记录按钮的点击事件处理
+            document.getElementById('clearHistoryBtn').addEventListener('click', function() {
+                if (confirm('确定要清除所有历史记录吗？')) {
+                    localStorage.removeItem('qrHistory');
+                    updateHistoryDisplay();
+                }
+            });
+
+            // 添加清扫按钮事件处理
+            const cleanBtn = document.getElementById('cleanBtn');
+            cleanBtn.addEventListener('click', function() {
+                // 添加确认对话框
+                if (confirm('确定要清空所有数据吗？')) {
+                    cleanAllData();
+                }
+            });
+
+            // 添加清扫功能
+            function cleanAllData() {
+                // 清空 URL 输入
+                urlInput.value = '';
+
+                // 添加动画效果
+                const elements = [previewContainer, resultTableBody];
+                elements.forEach(el => {
+                    if (el.children.length > 0) {
+                        el.classList.add('sweeping');
+                    }
+                });
+
+                // 等待动画完成后清空内容
+                setTimeout(() => {
+                    // 清空预览区域
+                    previewContainer.innerHTML = '';
+                    previewContainer.classList.remove('sweeping');
+
+                    // 清空当前识别结果
+                    resultTableBody.innerHTML = '';
+                    resultTableBody.classList.remove('sweeping');
+
+                    // 显示成功提示
+                    showSuccessTooltip('数据已清空');
+                }, 300);
+
+                // 释放可能存在的对象 URL
+                const imgs = document.querySelectorAll('img[src^="blob:"]');
+                imgs.forEach(img => {
+                    if (img.src.startsWith('blob:')) {
+                        URL.revokeObjectURL(img.src);
+                    }
+                });
+            }
+
+            // 添加快捷键支持
+            document.addEventListener('keydown', function(e) {
+                // 按 Esc 键触发清扫
+                if (e.key === 'Escape') {
+                    cleanBtn.click();
+                }
+            });
         });
+
+        // 添加 HTML 转义函数
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     </script>
 </body>
 </html> 

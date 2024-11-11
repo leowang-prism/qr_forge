@@ -290,7 +290,6 @@
         <div>
             <input type="text" class="url-input" id="urlInput" placeholder="输入图片URL地址">
             <button class="submit-btn" id="urlSubmitBtn">识别URL图片</button>
-            <button class="clean-btn" id="cleanBtn">清空数据</button>
         </div>
 
         <!-- 预览区域 -->
@@ -444,7 +443,7 @@
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     if (file.size > 2 * 1024 * 1024) {
-                        addResult(i + 1, '失败', '文件大小超过2MB');
+                        addResult(i + 1, '失败', '文件大���超过2MB');
                         continue;
                     }
 
@@ -598,7 +597,7 @@
                             `<button onclick="confirmAndOpenUrl('${safeResult}')" class="copy-btn">打开链接</button>` : 
                             ''}
                         ${isImageUrl(result) ? 
-                            `<button onclick="handleImageUrl('${safeResult}')" class="copy-btn">识别图片</button>` : 
+                            `<button onclick="handleImageUrl('${safeResult}')" class="copy-btn">识别图��</button>` : 
                             ''}
                         <button onclick="copyToClipboard('${safeResult}')" class="copy-btn">复制</button>
                     </td>
@@ -691,7 +690,7 @@
                         previewItem.querySelector('.status-badge').textContent = '失败';
                         throw error;
                     } finally {
-                        // 清理创建的 URL
+                        // 清理��建的 URL
                         URL.revokeObjectURL(imageUrl);
                     }
 
@@ -852,12 +851,11 @@
             // 初始化显示历史记录
             updateHistoryDisplay();
 
-            // 添加清除历史记录按钮的点击事件处理
+            // 修改清除历史记录按钮的事件处理
             document.getElementById('clearHistoryBtn').addEventListener('click', function() {
-                if (confirm('确定要清除所有历史记录吗？')) {
-                    localStorage.removeItem('qrHistory');
-                    updateHistoryDisplay();
-                }
+                // 直接清除历史记录，不显示确认弹窗
+                localStorage.removeItem('qrHistory');
+                updateHistoryDisplay();
             });
 
             // 添加清扫按钮事件处理

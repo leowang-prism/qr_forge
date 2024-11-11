@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码识别器</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .upload-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .upload-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .upload-button:hover {
+            background-color: #45a049;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        #preview {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+
+        .drop-zone {
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+            padding: 25px;
+            margin: 20px auto;
+            background: #fff;
+            border: 2px dashed #4CAF50;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .drop-zone.dragover {
+            background: #e8f5e9;
+            border-color: #2e7d32;
+        }
+
+        .url-input {
+            width: 100%;
+            max-width: 580px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .submit-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .result-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .result-table th, .result-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .result-table th {
+            background-color: #f5f5f5;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .preview-item {
+            width: 150px;
+            position: relative;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: white;
+        }
+
+        .status-success {
+            background-color: #4CAF50;
+        }
+
+        .status-error {
+            background-color: #f44336;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/zxing-js-library@0.19.2/umd/index.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>二维码识别器</h1>
+        
+        <!-- 拖拽上传区域 -->
+        <div class="drop-zone" id="dropZone">
+            <p>拖拽文件到此处，或点击上传</p>
+            <p>支持格式：JPG、PNG、GIF、WEBP（小于2MB）</p>
+            <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+        </div>
+
+        <!-- URL输入区域 -->
+        <div>
+            <input type="text" class="url-input" id="urlInput" placeholder="输入图片URL地址">
+            <button class="submit-btn" id="urlSubmitBtn">识别URL图片</button>
+        </div>
+
+        <!-- 预览区域 -->
+        <div class="preview-container" id="previewContainer"></div>
+
+        <!-- 结果表格 -->
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>状态</th>
+                    <th>识别结果</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="resultTableBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('file-input');
+            const urlInput = document.getElementById('urlInput');
+            const urlSubmitBtn = document.getElementById('urlSubmitBtn');
+            const previewContainer = document.getElementById('previewContainer');
+            const resultTableBody = document.getElementById('resultTableBody');
+
+            // 处理拖拽
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = Array.from(e.dataTransfer.files);
+                handleFiles(files);
+            });
+
+            dropZone.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const files = Array.from(e.target.files);
+                handleFiles(files);
+            });
+
+            urlSubmitBtn.addEventListener('click', () => {
+                const url = urlInput.value.trim();
+                if (url) {
+                    handleImageUrl(url);
+                }
+            });
+
+            async function handleFiles(files) {
+                previewContainer.innerHTML = '';
+                resultTableBody.innerHTML = '';
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (file.size > 2 * 1024 * 1024) {
+                        addResult(i + 1, '失败', '文件大小超过2MB');
+                        continue;
+                    }
+
+                    try {
+                        const result = await processFile(file, i);
+                        addResult(i + 1, '成功', result);
+                    } catch (error) {
+                        addResult(i + 1, '失败', error.message);
+                    }
+                }
+            }
+
+            // 使用 jsQR 进行识别
+            async function decodeWithJsQR(imageData) {
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                return code ? code.data : null;
+            }
+
+            // 使用 ZXing 进行识别
+            async function decodeWithZXing(imageData) {
+                try {
+                    const reader = new ZXing.BrowserQRCodeReader();
+                    const bitmap = new ImageData(
+                        new Uint8ClampedArray(imageData.data),
+                        imageData.width,
+                        imageData.height
+                    );
+                    const result = await reader.decodeFromImageData(bitmap);
+                    return result ? result.text : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            // 更新图片预处理函数
+            async function preprocessImage(file) {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const versions = [];
+                        const sizes = [
+                            { width: 800, height: Math.round(800 * img.height / img.width) },
+                            { width: 1000, height: Math.round(1000 * img.height / img.width) },
+                            { width: Math.round(600 * img.width / img.height), height: 600 }
+                        ];
+
+                        for (const size of sizes) {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = size.width;
+                            canvas.height = size.height;
+
+                            // 处理方式数组
+                            const processes = [
+                                // 原始版本
+                                () => {
+                                    ctx.filter = 'none';
+                                    ctx.drawImage(img, 0, 0, size.width, size.height);
+                                },
+                                // 增强对比度
+                                () => {
+                                    ctx.filter = 'contrast(1.4) brightness(1.2)';
+                                    ctx.drawImage(img, 0, 0, size.width, size.height);
+                                },
+                                // 锐化
+                                () => {
+                                    ctx.filter = 'contrast(1.2) brightness(1.1) saturate(1.2)';
+                                    ctx.drawImage(img, 0, 0, size.width, size.height);
+                                },
+                                // 黑白高对比
+                                () => {
+                                    ctx.filter = 'grayscale(1) contrast(2)';
+                                    ctx.drawImage(img, 0, 0, size.width, size.height);
+                                },
+                                // 反相
+                                () => {
+                                    ctx.filter = 'invert(1)';
+                                    ctx.drawImage(img, 0, 0, size.width, size.height);
+                                }
+                            ];
+
+                            for (const process of processes) {
+                                process();
+                                const imageData = ctx.getImageData(0, 0, size.width, size.height);
+                                versions.push(imageData);
+                                versions.push(canvas.toDataURL('image/png', 1.0));
+                            }
+                        }
+
+                        resolve(versions);
+                    };
+
+                    img.src = URL.createObjectURL(file);
+                });
+            }
+
+            async function processFile(file, index) {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+                    <img src="${URL.createObjectURL(file)}">
+                    <span class="status-badge">处理中...</span>
+                `;
+                previewContainer.appendChild(previewItem);
+
+                try {
+                    const processedVersions = await preprocessImage(file);
+                    
+                    // 尝试所有可能的识别方法
+                    for (const version of processedVersions) {
+                        try {
+                            // 如果是 ImageData
+                            if (version instanceof ImageData) {
+                                // 尝试 jsQR
+                                const jsQRResult = await decodeWithJsQR(version);
+                                if (jsQRResult) {
+                                    return handleSuccess(jsQRResult, previewItem);
+                                }
+
+                                // 尝试 ZXing
+                                const zxingResult = await decodeWithZXing(version);
+                                if (zxingResult) {
+                                    return handleSuccess(zxingResult, previewItem);
+                                }
+                            } 
+                            // 如果是 DataURL
+                            else if (typeof version === 'string') {
+                                // 尝试 QrScanner
+                                const response = await fetch(version);
+                                const blob = await response.blob();
+                                const result = await QrScanner.scanImage(blob, {
+                                    returnDetailedScanResult: true,
+                                    qrEngine: 'worker'
+                                });
+                                if (result && result.data) {
+                                    return handleSuccess(result.data, previewItem);
+                                }
+                            }
+                        } catch (e) {
+                            console.log('当前识别方法失败，继续尝试...');
+                        }
+                    }
+
+                    throw new Error('无法识别二维码');
+                } catch (error) {
+                    previewItem.querySelector('.status-badge').className = 'status-badge status-error';
+                    previewItem.querySelector('.status-badge').textContent = '失败';
+                    throw new Error('无法识别二维码，请确保图片清晰且包含有效的二维码');
+                }
+            }
+
+            function handleSuccess(result, previewItem) {
+                previewItem.querySelector('.status-badge').className = 'status-badge status-success';
+                previewItem.querySelector('.status-badge').textContent = '成功';
+                return result;
+            }
+
+            function addResult(index, status, result) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index}</td>
+                    <td>${status}</td>
+                    <td>${result}</td>
+                    <td>
+                        ${isValidUrl(result) ? 
+                            `<button onclick="window.open('${result}', '_blank')">打开链接</button>` : 
+                            ''}
+                    </td>
+                `;
+                resultTableBody.appendChild(row);
+            }
+
+            function isValidUrl(str) {
+                try {
+                    new URL(str);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+
+            async function handleImageUrl(url) {
+                try {
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    const file = new File([blob], 'image.jpg', { type: blob.type });
+                    handleFiles([file]);
+                } catch (error) {
+                    addResult(1, '失败', '无法加载URL图片');
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
